@@ -229,20 +229,29 @@ class pokemon:
 		
 		if asString:
 			if (minPct == maxPct):
-				return ("%.1f%% to %.1f%%" % (100.0*minPct, 100.0*maxPct))
-			else:
 				return ("%.1f%%" % (100.0*maxPct))
+			else:
+				return ("%.1f%% to %.1f%%" % (100.0*minPct, 100.0*maxPct))
 		else:
 			return [minPct, maxPct]
 	
 	###########################
 	### class methods
 	###########################
+	def getSafeName(name):
+		# Here we have a collection of string manipulation tools to ensure that
+		# names that are confusing (boy/girl, spaces/punctuation) are well handled
+		tmpName = name.strip(' ')
+		tmpName = tmpName.replace(' ','-') # Mr. Mime fix to mr-mime
+		tmpName = tmpName.replace('♀','-f') # gender female
+		tmpName = tmpName.replace('♂','-m') # gender male
+		return tmpName
+	
 	def getIDbyName(name):
 		global PokemonNames
 		pokemon.chkLoad()
 		try:
-			pid = PokemonNames[name]
+			pid = PokemonNames[pokemon.getSafeName(name)]
 		except:
 			pid = -1
 			
